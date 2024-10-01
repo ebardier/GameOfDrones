@@ -1,0 +1,56 @@
+<div class="container w-100 m-auto mt-5">
+  <div *ngIf="gameService.game.winner == ''" class="row">
+      <div class="col-4 m-3">
+        <form #loginForm="ngForm">
+          <h1>Round {{ gameService.round }}</h1>
+          <h2>Player: {{ (gameService.currentPlayer == 1) ? gameService.game.player1.toUpperCase() :  gameService.game.player2.toUpperCase() }}</h2>
+          <div class="form-group">
+            <label for="moveSelect">Select move</label>
+            <select class="form-control" id="moveSelect" [(ngModel)]="model.move" name="moveSelect">
+              <option *ngFor="let move of gameService.moves">{{move.move}}</option>
+            </select>
+            <br/>
+            <div class="col text-center">
+              <button class="btn btn-primary py-2 mt-3 " type="button" 
+              (click)="saveMove()" [disabled]="!gameService.inProgress">Ok</button>
+              <br/>
+            <button class="btn btn-secondary py-2 mt-3" type="button" 
+              (click)="restart()">Restart Game</button>
+            </div>                        
+          </div>    
+        </form>
+      </div>
+      <div class="col-4 offset-2 m-3">
+        <h2>SCORE</h2>
+        <table class="table">
+          <thead>
+            <tr>
+              <th scope="col">#</th>
+              <th scope="col">First</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (w of gameService.rounds; track w.Number) {
+              <tr>
+                <th scope="row">{{w.Number}}</th>
+                <td>{{w.Winner}}</td>
+              </tr>   
+            }
+          </tbody>
+        </table>
+      </div>
+  </div>
+
+  <div *ngIf="gameService.game.winner != ''">
+    <div class="row justify-content-center align-items-center" style="height:80vh">
+      <div class="col text-center">
+        <form >
+          <h1 class="text-center">We have a WINNER!</h1>
+          <h1 class="text-center">{{ gameService.game.winner }} is the new EMPEROR!</h1>
+          <button class="btn btn-primary py-2 mt-3" type="button" 
+                  (click)="restart()">Play Again</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
